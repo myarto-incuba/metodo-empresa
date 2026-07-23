@@ -29,9 +29,10 @@ audit_pages = [
     st.Page("views/action_plan.py", title="Plan de acción", icon=":material/task_alt:"),
 ]
 
-navigation = {"General": general_pages}
-if st.session_state.get("active_audit_id"):
-    navigation["Expediente activo"] = audit_pages
+navigation = {
+    "General": general_pages,
+    "Expediente activo": audit_pages,
+}
 
 page = st.navigation(navigation)
 page.run()

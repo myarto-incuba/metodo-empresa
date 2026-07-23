@@ -1,0 +1,189 @@
+{
+  "AUD-F2D787D4E0": {
+    "evidence": [
+      {
+        "area": "Dirección",
+        "name": "Plan estratégico u objetivos anuales",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Dirección",
+        "name": "Organigrama y responsabilidades",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Finanzas",
+        "name": "Estado de resultados",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Finanzas",
+        "name": "Flujo de efectivo o presupuesto",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Comercial",
+        "name": "Base de clientes o CRM",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Comercial",
+        "name": "Reporte de ventas",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Operaciones",
+        "name": "Checklist o proceso de eventos",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Operaciones",
+        "name": "Ejemplo de cronograma de proyecto",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Personas",
+        "name": "Descripciones de puesto",
+        "status": "Pendiente",
+        "notes": ""
+      },
+      {
+        "area": "Personas",
+        "name": "Indicadores o evaluaciones del equipo",
+        "status": "Pendiente",
+        "notes": ""
+      }
+    ],
+    "updated_at": "2026-07-23T18:17:21.124344+00:00",
+    "action_plan": [
+      {
+        "period": "0–30 días",
+        "action": "Construir flujo de efectivo de 13 semanas.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Rentabilidad poco visible",
+        "reason": "Puede crecer en ingresos mientras deteriora liquidez o rentabilidad."
+      },
+      {
+        "period": "0–30 días",
+        "action": "Definir costeo y margen por servicio o proyecto.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Rentabilidad poco visible",
+        "reason": "Puede crecer en ingresos mientras deteriora liquidez o rentabilidad."
+      },
+      {
+        "period": "0–30 días",
+        "action": "Listar decisiones que hoy requieren autorización de dirección.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Dependencia de la dirección",
+        "reason": "La empresa pierde velocidad, limita su crecimiento y queda expuesta cuando la persona clave no está disponible."
+      },
+      {
+        "period": "0–30 días",
+        "action": "Definir responsables y límites de autoridad.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Dependencia de la dirección",
+        "reason": "La empresa pierde velocidad, limita su crecimiento y queda expuesta cuando la persona clave no está disponible."
+      },
+      {
+        "period": "0–30 días",
+        "action": "Definir etapas del embudo comercial y registrar todos los prospectos.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Comercial reactivo",
+        "reason": "Se pierden oportunidades, no se conoce la conversión y el crecimiento resulta difícil de proyectar."
+      },
+      {
+        "period": "0–30 días",
+        "action": "Asignar fecha y responsable a cada seguimiento.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "0–30 días",
+        "status": "Pendiente",
+        "source_pattern": "Comercial reactivo",
+        "reason": "Se pierden oportunidades, no se conoce la conversión y el crecimiento resulta difícil de proyectar."
+      },
+      {
+        "period": "31–60 días",
+        "action": "Comparar presupuesto contra resultado real cada mes.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "31–60 días",
+        "status": "Pendiente",
+        "source_pattern": "Rentabilidad poco visible",
+        "reason": "Puede crecer en ingresos mientras deteriora liquidez o rentabilidad."
+      },
+      {
+        "period": "31–60 días",
+        "action": "Documentar funciones críticas y crear respaldos operativos.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "31–60 días",
+        "status": "Pendiente",
+        "source_pattern": "Dependencia de la dirección",
+        "reason": "La empresa pierde velocidad, limita su crecimiento y queda expuesta cuando la persona clave no está disponible."
+      },
+      {
+        "period": "31–60 días",
+        "action": "Medir conversión, ciclo de venta y origen de oportunidades.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "31–60 días",
+        "status": "Pendiente",
+        "source_pattern": "Comercial reactivo",
+        "reason": "Se pierden oportunidades, no se conoce la conversión y el crecimiento resulta difícil de proyectar."
+      },
+      {
+        "period": "61–90 días",
+        "action": "Revisar precios, mezcla comercial y condiciones de cobro con base en margen.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "61–90 días",
+        "status": "Pendiente",
+        "source_pattern": "Rentabilidad poco visible",
+        "reason": "Puede crecer en ingresos mientras deteriora liquidez o rentabilidad."
+      },
+      {
+        "period": "61–90 días",
+        "action": "Medir cuántas decisiones ya se resuelven sin intervención de la dirección.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "61–90 días",
+        "status": "Pendiente",
+        "source_pattern": "Dependencia de la dirección",
+        "reason": "La empresa pierde velocidad, limita su crecimiento y queda expuesta cuando la persona clave no está disponible."
+      },
+      {
+        "period": "61–90 días",
+        "action": "Crear campañas de recompra, referidos y reactivación.",
+        "priority": "Alta",
+        "owner": "",
+        "deadline": "61–90 días",
+        "status": "Pendiente",
+        "source_pattern": "Comercial reactivo",
+        "reason": "Se pierden oportunidades, no se conoce la conversión y el crecimiento resulta difícil de proyectar."
+      }
+    ]
+  }
+}

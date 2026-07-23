@@ -1,0 +1,249 @@
+{
+  "AUD-F2D787D4E0": {
+    "audit_id": "AUD-F2D787D4E0",
+    "answers": {
+      "DIR-001": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "plan estratégico",
+        "updated_at": "2026-07-23T18:12:13.276473+00:00"
+      },
+      "DIR-002": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "organigrama",
+        "updated_at": "2026-07-23T18:12:35.766761+00:00"
+      },
+      "DIR-003": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "minutas",
+        "updated_at": "2026-07-23T18:12:44.179043+00:00"
+      },
+      "DIR-004": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "seguimiento",
+        "updated_at": "2026-07-23T18:12:53.499278+00:00"
+      },
+      "DIR-005": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "metas",
+        "updated_at": "2026-07-23T18:13:02.224376+00:00"
+      },
+      "DIR-006": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "acuerdos de socios",
+        "updated_at": "2026-07-23T18:13:12.449827+00:00"
+      },
+      "DIR-007": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "presupuesto anual",
+        "updated_at": "2026-07-23T18:13:26.447604+00:00"
+      },
+      "DIR-008": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:33.869657+00:00"
+      },
+      "FIN-001": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:40.378937+00:00"
+      },
+      "FIN-002": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:44.707927+00:00"
+      },
+      "FIN-003": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:49.514483+00:00"
+      },
+      "FIN-004": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:53.674370+00:00"
+      },
+      "FIN-005": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:13:57.683443+00:00"
+      },
+      "FIN-006": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:02.804591+00:00"
+      },
+      "FIN-007": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:11.008033+00:00"
+      },
+      "FIN-008": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:16.106625+00:00"
+      },
+      "COM-001": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:20.745453+00:00"
+      },
+      "COM-002": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:26.814446+00:00"
+      },
+      "COM-003": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:32.483845+00:00"
+      },
+      "COM-004": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:36.434712+00:00"
+      },
+      "COM-005": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:41.557079+00:00"
+      },
+      "COM-006": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:45.854068+00:00"
+      },
+      "COM-007": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:14:57.618678+00:00"
+      },
+      "COM-008": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:01.939481+00:00"
+      },
+      "OPE-001": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:06.501644+00:00"
+      },
+      "OPE-002": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:12.584087+00:00"
+      },
+      "OPE-003": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:18.020754+00:00"
+      },
+      "OPE-004": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:24.007859+00:00"
+      },
+      "OPE-005": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:34.131729+00:00"
+      },
+      "OPE-006": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:39.312550+00:00"
+      },
+      "OPE-007": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:43.051354+00:00"
+      },
+      "OPE-008": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:47.708675+00:00"
+      },
+      "PER-001": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:52.155510+00:00"
+      },
+      "PER-002": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:15:56.318943+00:00"
+      },
+      "PER-003": {
+        "answer": "Sí",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:00.785356+00:00"
+      },
+      "PER-004": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:05.697731+00:00"
+      },
+      "PER-005": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:09.559252+00:00"
+      },
+      "PER-006": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:16.062606+00:00"
+      },
+      "PER-007": {
+        "answer": "No",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:22.078287+00:00"
+      },
+      "PER-008": {
+        "answer": "Parcialmente",
+        "comment": "",
+        "evidence_notes": "",
+        "updated_at": "2026-07-23T18:16:30.422802+00:00"
+      }
+    },
+    "observations": [],
+    "updated_at": "2026-07-23T18:16:30.422815+00:00"
+  }
+}

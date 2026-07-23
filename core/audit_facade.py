@@ -37,6 +37,8 @@ def create_audit_compatible(
         "name": company_name,
         "sector": sector,
         "industry": sector,
+        "employee_count": None,
+        "annual_revenue": None,
         "auditor_name": auditor_name,
         "auditor": auditor_name,
         "audit_date": today,

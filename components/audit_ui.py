@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 import html
+import textwrap
 
 import streamlit as st
 
@@ -60,20 +61,22 @@ def render_audit_header(audit: Any) -> None:
         )
 
     st.markdown(
-        f"""
-        <section class="inc-workspace">
-            <div class="inc-eyebrow">Expediente activo</div>
-            <div class="inc-workspace-company">{company}</div>
-            <div class="inc-workspace-meta">
-                {sector} · Auditor: {auditor} · {status}
-            </div>
-            <div class="inc-progress-track">
-                <div class="inc-progress-fill" style="width:{overall}%"></div>
-            </div>
-            <div class="inc-workspace-meta">Avance integral · {overall}%</div>
-            <div class="inc-steps">{''.join(steps)}</div>
-        </section>
-        """,
+        textwrap.dedent(
+            f"""
+            <section class="inc-workspace">
+                <div class="inc-eyebrow">Expediente activo</div>
+                <div class="inc-workspace-company">{company}</div>
+                <div class="inc-workspace-meta">
+                    {sector} · Auditor: {auditor} · {status}
+                </div>
+                <div class="inc-progress-track">
+                    <div class="inc-progress-fill" style="width:{overall}%"></div>
+                </div>
+                <div class="inc-workspace-meta">Avance integral · {overall}%</div>
+                <div class="inc-steps">{''.join(steps)}</div>
+            </section>
+            """
+        ),
         unsafe_allow_html=True,
     )
 
