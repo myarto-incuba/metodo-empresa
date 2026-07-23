@@ -2,17 +2,19 @@ from __future__ import annotations
 
 import streamlit as st
 
+from components.brand import apply_incubatour_brand
 from components.audit_ui import apply_product_style
 
 
 st.set_page_config(
-    page_title="Método Empresa",
+    page_title="Método Empresa | Incubatour",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 apply_product_style()
+apply_incubatour_brand()
 
 general_pages = [
     st.Page("views/dashboard.py", title="Dashboard", icon=":material/home:", default=True),
