@@ -23,32 +23,46 @@ interview = load_interview(audit_id)
 answers = interview.get("answers", {})
 results = calculate_results(interview)
 
+blocks = list(dict.fromkeys(q.conversation_block for q in INTERVIEW_QUESTIONS))
+block_counts = {
+    block: sum(1 for q in INTERVIEW_QUESTIONS if q.conversation_block == block)
+    for block in blocks
+}
+block_answered = {
+    block: sum(
+        1 for q in INTERVIEW_QUESTIONS
+        if q.conversation_block == block and q.code in answers
+    )
+    for block in blocks
+}
+
 if "ux_question_index" not in st.session_state:
     unanswered = [
-        index
-        for index, question in enumerate(INTERVIEW_QUESTIONS)
+        index for index, question in enumerate(INTERVIEW_QUESTIONS)
         if question.code not in answers
     ]
     st.session_state.ux_question_index = unanswered[0] if unanswered else 0
 
-index = min(
-    max(st.session_state.ux_question_index, 0),
-    len(INTERVIEW_QUESTIONS) - 1,
-)
+index = min(max(st.session_state.ux_question_index, 0), len(INTERVIEW_QUESTIONS) - 1)
 question = INTERVIEW_QUESTIONS[index]
 saved = answers.get(question.code, {})
 
-main, live = st.columns([3.4, 1.1], gap="large")
+main, live = st.columns([3.35, 1.15], gap="large")
 
 with main:
     st.markdown('<div class="inc-question-shell">', unsafe_allow_html=True)
     st.markdown(
         f'<div class="inc-question-number">'
-        f'{question.conversation_block} · {question.area} · '
+        f'Conversación {blocks.index(question.conversation_block)+1} de {len(blocks)} · '
         f'{index + 1} / {len(INTERVIEW_QUESTIONS)}</div>',
         unsafe_allow_html=True,
     )
     st.progress((index + 1) / len(INTERVIEW_QUESTIONS))
+    st.markdown(
+        f'<div class="inc-conversation-title">'
+        f'Hablemos de {question.conversation_block.lower()}.</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         f'<div class="inc-question">{question.text}</div>',
         unsafe_allow_html=True,
@@ -57,21 +71,22 @@ with main:
     options = ["Sin responder", "Sí", "Parcialmente", "No", "No aplica"]
     selected = saved.get("answer", "Sin responder")
     answer = st.radio(
-        "Selecciona una respuesta",
+        "Respuesta",
         options,
         index=options.index(selected) if selected in options else 0,
         horizontal=True,
         key=f"ux-answer-{audit_id}-{question.code}",
+        label_visibility="collapsed",
     )
 
     comment = st.text_area(
-        "Comentario del auditor",
+        "Notas de la conversación",
         value=saved.get("comment", ""),
-        placeholder="Contexto, ejemplos, responsables o situaciones relevantes.",
+        placeholder="Ejemplos, contexto, responsables, tensiones o decisiones relevantes.",
         key=f"ux-comment-{audit_id}-{question.code}",
     )
 
-    with st.expander("Evidencias sugeridas"):
+    with st.expander("Evidencias para profundizar"):
         for evidence in question.evidence_suggestions:
             st.write(f"• {evidence}")
         evidence_notes = st.text_area(
@@ -81,11 +96,7 @@ with main:
         )
 
     nav_1, nav_2, nav_3 = st.columns([1, 2, 1])
-    if nav_1.button(
-        "← Anterior",
-        disabled=index == 0,
-        use_container_width=True,
-    ):
+    if nav_1.button("← Anterior", disabled=index == 0, use_container_width=True):
         st.session_state.ux_question_index -= 1
         st.rerun()
 
@@ -98,13 +109,7 @@ with main:
         if answer == "Sin responder":
             st.warning("Selecciona una respuesta.")
         else:
-            save_answer(
-                audit_id,
-                question.code,
-                answer,
-                comment,
-                evidence_notes,
-            )
+            save_answer(audit_id, question.code, answer, comment, evidence_notes)
             if index < len(INTERVIEW_QUESTIONS) - 1:
                 st.session_state.ux_question_index += 1
             st.rerun()
@@ -117,16 +122,13 @@ with main:
         st.session_state.ux_question_index += 1
         st.rerun()
 
-    with st.expander("Registrar observación sobre esta pregunta"):
+    with st.expander("Observación sobre la metodología"):
         note = st.text_area(
-            "Observación de producto",
+            "Observación",
             placeholder="La pregunta fue confusa, sobró o hace falta otra.",
             key=f"ux-note-{audit_id}-{question.code}",
         )
-        if st.button(
-            "Guardar observación",
-            key=f"ux-note-save-{audit_id}-{question.code}",
-        ):
+        if st.button("Guardar observación", key=f"ux-note-save-{audit_id}-{question.code}"):
             try:
                 add_observation(audit_id, note, question.code)
             except ValueError as exc:
@@ -137,17 +139,23 @@ with main:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with live:
-    st.markdown('<div class="inc-section-title">Lectura en vivo</div>', unsafe_allow_html=True)
+    st.markdown('<div class="inc-section-title">Copiloto</div>', unsafe_allow_html=True)
     st.metric("Madurez preliminar", f"{results['overall_score']}%")
-    st.metric("Avance", f"{results['progress']:.0%}")
+    st.metric("Conversación", f"{results['progress']:.0%}")
+
+    st.markdown("#### Bloques")
+    for block in blocks:
+        value = block_answered[block] / block_counts[block]
+        st.caption(f"{block} · {block_answered[block]}/{block_counts[block]}")
+        st.progress(value)
 
     st.markdown("#### Hipótesis activas")
     if not results["hypotheses"]:
         st.caption("Aparecerán al guardar respuestas.")
-    for hypothesis in results["hypotheses"][:4]:
+    for hypothesis in results["hypotheses"][:3]:
         with st.container(border=True):
             st.write(f"**{hypothesis['name']}**")
             st.progress(hypothesis["confidence"] / 100)
-            st.caption(f"{hypothesis['confidence']}%")
+            st.caption(f"{hypothesis['confidence']}% de intensidad")
 
 render_footer()

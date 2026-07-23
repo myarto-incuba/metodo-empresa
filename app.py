@@ -23,7 +23,7 @@ general_pages = [
 ]
 
 audit_pages = [
-    st.Page("views/interview.py", title="Entrevista", icon=":material/forum:"),
+    st.Page("views/interview.py", title="Conversación", icon=":material/forum:"),
     st.Page("views/evidence.py", title="Evidencias", icon=":material/folder_open:"),
     st.Page("views/diagnosis.py", title="Diagnóstico", icon=":material/analytics:"),
     st.Page("views/action_plan.py", title="Plan de acción", icon=":material/task_alt:"),
@@ -31,7 +31,7 @@ audit_pages = [
 
 navigation = {"General": general_pages}
 if st.session_state.get("active_audit_id"):
-    navigation["Auditoría activa"] = audit_pages
+    navigation["Expediente activo"] = audit_pages
 
 page = st.navigation(navigation)
 page.run()
