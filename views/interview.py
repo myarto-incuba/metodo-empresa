@@ -46,21 +46,41 @@ if "ux_question_index" not in st.session_state:
 index = min(max(st.session_state.ux_question_index, 0), len(INTERVIEW_QUESTIONS) - 1)
 question = INTERVIEW_QUESTIONS[index]
 saved = answers.get(question.code, {})
+current_block_index = blocks.index(question.conversation_block)
 
-main, live = st.columns([3.35, 1.15], gap="large")
+st.markdown(
+    f"""
+    <section class="inc-panel" style="padding:1rem 1.2rem;margin-bottom:1rem;">
+        <div class="inc-card-kicker">CONVERSACIÓN ESTRATÉGICA</div>
+        <div style="display:flex;justify-content:space-between;gap:1rem;align-items:end;">
+            <div>
+                <div style="font-size:1.65rem;font-weight:900;letter-spacing:-.04em;">
+                    {question.conversation_block}
+                </div>
+                <div class="inc-meta">
+                    Bloque {current_block_index + 1} de {len(blocks)} ·
+                    {block_answered[question.conversation_block]}/{block_counts[question.conversation_block]} respondidas
+                </div>
+            </div>
+            <div class="inc-badge">{results['progress']:.0%} COMPLETADO</div>
+        </div>
+    </section>
+    """,
+    unsafe_allow_html=True,
+)
+
+main, live = st.columns([3.4, 1.15], gap="large")
 
 with main:
     st.markdown('<div class="inc-question-shell">', unsafe_allow_html=True)
     st.markdown(
         f'<div class="inc-question-number">'
-        f'Conversación {blocks.index(question.conversation_block)+1} de {len(blocks)} · '
-        f'{index + 1} / {len(INTERVIEW_QUESTIONS)}</div>',
+        f'Punto de conversación {index + 1} de {len(INTERVIEW_QUESTIONS)}</div>',
         unsafe_allow_html=True,
     )
     st.progress((index + 1) / len(INTERVIEW_QUESTIONS))
     st.markdown(
-        f'<div class="inc-conversation-title">'
-        f'Hablemos de {question.conversation_block.lower()}.</div>',
+        '<div class="inc-conversation-title">Profundicemos en este tema.</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -82,11 +102,12 @@ with main:
     comment = st.text_area(
         "Notas de la conversación",
         value=saved.get("comment", ""),
-        placeholder="Ejemplos, contexto, responsables, tensiones o decisiones relevantes.",
+        placeholder="Escribe ejemplos, tensiones, decisiones, responsables o contexto relevante.",
         key=f"ux-comment-{audit_id}-{question.code}",
+        height=130,
     )
 
-    with st.expander("Evidencias para profundizar"):
+    with st.expander("Evidencias y señales para validar"):
         for evidence in question.evidence_suggestions:
             st.write(f"• {evidence}")
         evidence_notes = st.text_area(
@@ -140,22 +161,36 @@ with main:
 
 with live:
     st.markdown('<div class="inc-section-title">Copiloto</div>', unsafe_allow_html=True)
-    st.metric("Madurez preliminar", f"{results['overall_score']}%")
-    st.metric("Conversación", f"{results['progress']:.0%}")
 
-    st.markdown("#### Bloques")
+    with st.container(border=True):
+        st.caption("LECTURA PRELIMINAR")
+        st.metric("Madurez", f"{results['overall_score']}%")
+        st.metric("Conversación", f"{results['progress']:.0%}")
+
+    st.markdown("#### Señales por bloque")
     for block in blocks:
         value = block_answered[block] / block_counts[block]
         st.caption(f"{block} · {block_answered[block]}/{block_counts[block]}")
         st.progress(value)
 
-    st.markdown("#### Hipótesis activas")
-    if not results["hypotheses"]:
-        st.caption("Aparecerán al guardar respuestas.")
-    for hypothesis in results["hypotheses"][:3]:
+    st.markdown("#### Patrones detectados")
+    hypotheses = results.get("hypotheses", [])
+    if not hypotheses:
+        st.caption("Aparecerán conforme avance la conversación.")
+    for hypothesis in hypotheses[:4]:
         with st.container(border=True):
+            st.caption("HIPÓTESIS")
             st.write(f"**{hypothesis['name']}**")
             st.progress(hypothesis["confidence"] / 100)
             st.caption(f"{hypothesis['confidence']}% de intensidad")
+
+    weak_areas = sorted(
+        results.get("area_scores", {}).items(),
+        key=lambda item: item[1]
+    )[:2]
+    if weak_areas:
+        st.markdown("#### Áreas a profundizar")
+        for area, score in weak_areas:
+            st.write(f"• **{area}** · {score}%")
 
 render_footer()
