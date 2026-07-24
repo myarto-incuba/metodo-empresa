@@ -12,38 +12,33 @@ render_wordmark()
 st.markdown(
     """
     <section class="inc-hero">
-      <div class="inc-eyebrow">Incubatour · Decision Lab</div>
-      <h1>Le ponemos <span class="accent">método</span><br>a tu empresa.</h1>
-      <div class="inc-hero-copy">
-        Una metodología digital para conducir conversaciones estratégicas,
-        detectar patrones y convertirlos en decisiones, prioridades y acción.
+      <div class="inc-hero-grid">
+        <div>
+          <div class="inc-eyebrow">Incubatour · Decision Lab</div>
+          <h1>Le ponemos <span class="accent">método</span><br>a tu empresa.</h1>
+          <div class="inc-hero-copy">
+            Una metodología digital para conducir conversaciones estratégicas,
+            detectar patrones y convertirlos en decisiones, prioridades y acción.
+          </div>
+          <div class="inc-pill">De la conversación a la decisión. De la decisión a la acción.</div>
+        </div>
+        <div class="inc-poker">
+          <div class="inc-poker-title">Póker de As · Método Incubatour</div>
+          <div class="inc-poker-row analiza">
+            <span class="inc-poker-symbol">◆</span><span class="inc-poker-name">Analiza</span><span class="inc-poker-copy">Comprende la realidad actual.</span>
+          </div>
+          <div class="inc-poker-row aprende">
+            <span class="inc-poker-symbol">◆</span><span class="inc-poker-name">Aprende</span><span class="inc-poker-copy">Reconoce patrones y hallazgos.</span>
+          </div>
+          <div class="inc-poker-row adapta">
+            <span class="inc-poker-symbol">◆</span><span class="inc-poker-name">Adapta</span><span class="inc-poker-copy">Prioriza decisiones estratégicas.</span>
+          </div>
+          <div class="inc-poker-row actua">
+            <span class="inc-poker-symbol">◆</span><span class="inc-poker-name">Actúa</span><span class="inc-poker-copy">Convierte el diagnóstico en acción.</span>
+          </div>
+        </div>
       </div>
-      <div class="inc-pill">De la conversación a la decisión. De la decisión a la acción.</div>
     </section>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    """
-    <div class="inc-method-grid">
-      <div class="inc-method-card analiza">
-        <div class="inc-method-name">Analiza</div>
-        <div class="inc-method-copy">Comprende la realidad actual de la empresa.</div>
-      </div>
-      <div class="inc-method-card aprende">
-        <div class="inc-method-name">Aprende</div>
-        <div class="inc-method-copy">Reconoce patrones, señales y hallazgos.</div>
-      </div>
-      <div class="inc-method-card adapta">
-        <div class="inc-method-name">Adapta</div>
-        <div class="inc-method-copy">Define prioridades y decisiones estratégicas.</div>
-      </div>
-      <div class="inc-method-card actua">
-        <div class="inc-method-name">Actúa</div>
-        <div class="inc-method-copy">Convierte el diagnóstico en un plan concreto.</div>
-      </div>
-    </div>
     """,
     unsafe_allow_html=True,
 )
@@ -55,14 +50,8 @@ except Exception as exc:
     st.exception(exc)
     st.stop()
 
-in_progress = sum(
-    1 for audit in audits
-    if getattr(audit, "status", "") != "Completada"
-)
-completed = sum(
-    1 for audit in audits
-    if getattr(audit, "status", "") == "Completada"
-)
+in_progress = sum(1 for audit in audits if getattr(audit, "status", "") != "Completada")
+completed = sum(1 for audit in audits if getattr(audit, "status", "") == "Completada")
 
 st.markdown(
     f"""
@@ -89,17 +78,9 @@ st.markdown(
 
 left, right = st.columns([4, 1])
 with left:
-    st.markdown(
-        '<div class="inc-section-title">Expedientes activos</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="inc-section-title">Expedientes activos</div>', unsafe_allow_html=True)
 with right:
-    if st.button(
-        "＋ Nueva auditoría",
-        type="primary",
-        use_container_width=True,
-        key="dashboard_new_audit",
-    ):
+    if st.button("＋ Nueva auditoría", type="primary", use_container_width=True, key="dashboard_new_audit"):
         st.switch_page("views/audits.py")
 
 if not audits:
@@ -120,11 +101,7 @@ else:
             col1.caption(getattr(audit, "sector", "") or "Sector no indicado")
             col2.write(f"**Avance integral · {round(overall * 100)}%**")
             col2.progress(overall)
-            if col3.button(
-                "Abrir →",
-                key=f"open-{audit_id}",
-                use_container_width=True,
-            ):
+            if col3.button("Abrir →", key=f"open-{audit_id}", use_container_width=True):
                 st.session_state.active_audit_id = audit_id
                 st.switch_page("views/interview.py")
 
