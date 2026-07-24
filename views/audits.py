@@ -1,70 +1,76 @@
 from __future__ import annotations
 
-from datetime import date
-
 import streamlit as st
-
 from components.audit_ui import audit_progress
+from components.page_header import render_page_header
+from components.session_wizard import (
+    close_session_wizard,
+    get_session_wizard_step,
+    open_session_wizard,
+    render_session_wizard,
+)
 from core.audit_facade import create_audit_compatible, list_audits
 
 
-st.title("Auditorías")
-st.caption("Crea una auditoría o abre una existente.")
+def overall(audit_id: str) -> float:
+    try:
+        values = audit_progress(audit_id)
+        return sum(values.values()) / len(values) if values else 0.0
+    except Exception:
+        return 0.0
 
-with st.expander("＋ Nueva auditoría", expanded=not bool(list_audits())):
-    with st.form("new-audit"):
-        company_name = st.text_input("Empresa", placeholder="Synoni")
-        sector = st.text_input(
-            "Sector",
-            placeholder="Capacitación y eventos para la industria de bodas",
-        )
-        auditor_name = st.text_input("Auditor", value="Mariana")
-        audit_date = st.date_input("Fecha", value=date.today())
-        submitted = st.form_submit_button(
-            "Crear auditoría",
-            type="primary",
-            use_container_width=True,
-        )
 
-    if submitted:
-        if not company_name.strip():
-            st.warning("Escribe el nombre de la empresa.")
-        else:
-            try:
-                audit = create_audit_compatible(
-                    company_name.strip(),
-                    sector.strip(),
-                    auditor_name.strip(),
-                    audit_date.isoformat(),
-                )
-            except Exception as exc:
-                st.error(f"No fue posible crear la auditoría: {exc}")
-            else:
-                st.session_state.active_audit_id = getattr(audit, "audit_id", None)
-                st.success("Auditoría creada.")
-                st.rerun()
+render_page_header(
+    title="Auditorías",
+    eyebrow="Método Empresa",
+    description="Inicia una nueva sesión estratégica o continúa un expediente existente.",
+)
 
-st.subheader("Historial")
-
-audits = list_audits()
-if not audits:
-    st.info("No hay auditorías registradas.")
+if get_session_wizard_step() is None:
+    intro, action = st.columns([4, 1.2], vertical_alignment="center")
+    intro.subheader("Sesiones estratégicas")
+    intro.caption("Cada expediente reúne conversación, evidencias, diagnóstico y plan de acción.")
+    if action.button("＋ Nueva sesión", type="primary", use_container_width=True):
+        open_session_wizard()
+        st.rerun()
 else:
-    for audit in reversed(audits):
-        audit_id = getattr(audit, "audit_id", "")
-        progress = audit_progress(audit_id)
-        with st.container(border=True):
-            col_1, col_2, col_3 = st.columns([3, 2, 1])
-            with col_1:
-                st.markdown(f"### {getattr(audit, 'company_name', 'Empresa')}")
-                st.caption(
-                    f"{getattr(audit, 'sector', '') or 'Sector no indicado'} · "
-                    f"{getattr(audit, 'status', '') or 'En proceso'}"
-                )
-            with col_2:
-                st.write(f"**{round(progress['overall'] * 100)}% completado**")
-                st.progress(progress["overall"])
-            with col_3:
-                if st.button("Continuar", key=f"continue-{audit_id}", use_container_width=True):
-                    st.session_state.active_audit_id = audit_id
-                    st.switch_page("views/interview.py")
+    result = render_session_wizard()
+    if result:
+        try:
+            audit = create_audit_compatible(
+                result["company_name"], result["sector"], result["auditor_name"], result["audit_date"]
+            )
+            st.session_state.active_audit_id = getattr(audit, "audit_id")
+            st.session_state.active_company = result["company_name"]
+            close_session_wizard()
+            st.switch_page("views/interview.py")
+        except Exception as exc:
+            st.error(f"No fue posible crear la sesión: {exc}")
+
+st.divider()
+audits = list_audits() or []
+if not audits:
+    st.info("Todavía no hay sesiones registradas.")
+else:
+    header = st.columns([3, 1.5, 2, 1])
+    for col, label in zip(header, ["Empresa", "Avance", "Fecha / sector", ""]):
+        col.caption(label.upper())
+    st.divider()
+
+    for audit in audits:
+        audit_id = str(getattr(audit, "audit_id", ""))
+        value = overall(audit_id)
+        company = getattr(audit, "company_name", "Empresa")
+        info, progress_col, meta, action = st.columns([3, 1.5, 2, 1], vertical_alignment="center")
+        info.markdown(f"**{company}**")
+        info.caption(getattr(audit, "auditor_name", "") or "Sin consultor")
+        progress_col.progress(value)
+        progress_col.caption(f"{value:.0%}")
+        meta.caption(
+            f"{getattr(audit, 'audit_date', 'Sin fecha')} · {getattr(audit, 'sector', '') or 'Sin sector'}"
+        )
+        if action.button("Abrir", key=f"continue-{audit_id}", use_container_width=True):
+            st.session_state.active_audit_id = audit_id
+            st.session_state.active_company = company
+            st.switch_page("views/interview.py")
+        st.divider()

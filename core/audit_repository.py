@@ -117,6 +117,7 @@ def list_audits(
         )
 
     audits = [Audit.from_dict(item) for item in raw_data]
+
     return sorted(
         audits,
         key=lambda audit: audit.created_at,
@@ -145,6 +146,7 @@ def update_audit_status(
     data_path: Path | str = DEFAULT_DATA_PATH,
 ) -> Audit:
     status = status.strip()
+
     if not status:
         raise ValueError("El estado no puede estar vacío.")
 
@@ -176,6 +178,35 @@ def update_audit_status(
     return updated
 
 
+def delete_audits_by_company(
+    company_name: str,
+    *,
+    data_path: Path | str = DEFAULT_DATA_PATH,
+) -> int:
+    normalized_name = company_name.strip().casefold()
+
+    if not normalized_name:
+        raise ValueError("El nombre de la empresa es obligatorio.")
+
+    audits = list_audits(data_path=data_path)
+
+    remaining_audits = [
+        audit
+        for audit in audits
+        if audit.company_name.strip().casefold() != normalized_name
+    ]
+
+    deleted_count = len(audits) - len(remaining_audits)
+
+    if deleted_count == 0:
+        raise KeyError(
+            f"No existen auditorías asociadas a la empresa {company_name}."
+        )
+
+    _write_audits(remaining_audits, data_path=data_path)
+    return deleted_count
+
+
 def _write_audits(
     audits: list[Audit],
     *,
@@ -186,20 +217,24 @@ def _write_audits(
 
     temporary_path = path.with_suffix(path.suffix + ".tmp")
     payload = [asdict(audit) for audit in audits]
+
     temporary_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+
     temporary_path.replace(path)
 
 
 def _optional_int(value: Any) -> int | None:
     if value in (None, ""):
         return None
+
     return int(value)
 
 
 def _optional_float(value: Any) -> float | None:
     if value in (None, ""):
         return None
+
     return float(value)

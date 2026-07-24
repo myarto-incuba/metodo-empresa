@@ -12,36 +12,72 @@ render_wordmark()
 st.markdown(
     """
     <section class="inc-hero">
-      <div class="inc-eyebrow">Centro de operaciones</div>
+      <div class="inc-eyebrow">Incubatour · Decision Lab</div>
       <h1>Le ponemos <span class="accent">método</span><br>a tu empresa.</h1>
       <div class="inc-hero-copy">
         Una metodología digital para conducir conversaciones estratégicas,
         detectar patrones y convertirlos en decisiones, prioridades y acción.
       </div>
-      <div class="inc-pill">Le ponemos método a tu locura.</div>
+      <div class="inc-pill">De la conversación a la decisión. De la decisión a la acción.</div>
     </section>
     """,
     unsafe_allow_html=True,
 )
 
-audits = list_audits()
-in_progress = sum(1 for audit in audits if getattr(audit, "status", "") != "Completada")
-completed = sum(1 for audit in audits if getattr(audit, "status", "") == "Completada")
+st.markdown(
+    """
+    <div class="inc-method-grid">
+      <div class="inc-method-card analiza">
+        <div class="inc-method-name">Analiza</div>
+        <div class="inc-method-copy">Comprende la realidad actual de la empresa.</div>
+      </div>
+      <div class="inc-method-card aprende">
+        <div class="inc-method-name">Aprende</div>
+        <div class="inc-method-copy">Reconoce patrones, señales y hallazgos.</div>
+      </div>
+      <div class="inc-method-card adapta">
+        <div class="inc-method-name">Adapta</div>
+        <div class="inc-method-copy">Define prioridades y decisiones estratégicas.</div>
+      </div>
+      <div class="inc-method-card actua">
+        <div class="inc-method-name">Actúa</div>
+        <div class="inc-method-copy">Convierte el diagnóstico en un plan concreto.</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+try:
+    audits = list_audits() or []
+except Exception as exc:
+    st.error("No fue posible cargar las auditorías registradas.")
+    st.exception(exc)
+    st.stop()
+
+in_progress = sum(
+    1 for audit in audits
+    if getattr(audit, "status", "") != "Completada"
+)
+completed = sum(
+    1 for audit in audits
+    if getattr(audit, "status", "") == "Completada"
+)
 
 st.markdown(
     f"""
     <div class="inc-metric-grid">
-      <div class="inc-metric-card lime">
+      <div class="inc-metric-card green">
         <div class="inc-metric-kicker">Portafolio</div>
         <div class="inc-metric-value">{len(audits)}</div>
         <div class="inc-metric-label">Auditorías registradas</div>
       </div>
-      <div class="inc-metric-card purple">
+      <div class="inc-metric-card orange">
         <div class="inc-metric-kicker">En movimiento</div>
         <div class="inc-metric-value">{in_progress}</div>
         <div class="inc-metric-label">Procesos activos</div>
       </div>
-      <div class="inc-metric-card coral">
+      <div class="inc-metric-card magenta">
         <div class="inc-metric-kicker">Resultados</div>
         <div class="inc-metric-value">{completed}</div>
         <div class="inc-metric-label">Auditorías completadas</div>
@@ -53,24 +89,42 @@ st.markdown(
 
 left, right = st.columns([4, 1])
 with left:
-    st.markdown('<div class="inc-section-title">Expedientes activos</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="inc-section-title">Expedientes activos</div>',
+        unsafe_allow_html=True,
+    )
 with right:
-    if st.button("＋ Nueva auditoría", type="primary", use_container_width=True):
+    if st.button(
+        "＋ Nueva auditoría",
+        type="primary",
+        use_container_width=True,
+        key="dashboard_new_audit",
+    ):
         st.switch_page("views/audits.py")
 
 if not audits:
     st.info("Todavía no hay auditorías. Crea la primera para comenzar.")
 else:
     for audit in reversed(audits):
-        audit_id = getattr(audit, "audit_id", "")
-        progress = audit_progress(audit_id)
+        audit_id = str(getattr(audit, "audit_id", "") or "")
+        try:
+            progress_data = audit_progress(audit_id)
+            overall = float(progress_data.get("overall", 0)) if isinstance(progress_data, dict) else float(progress_data)
+        except Exception:
+            overall = 0.0
+        overall = max(0.0, min(overall, 1.0))
+
         with st.container(border=True):
-            col1, col2, col3 = st.columns([3,2,1])
-            col1.markdown(f"### {getattr(audit,'company_name','Empresa')}")
-            col1.caption(getattr(audit,'sector','') or "Sector no indicado")
-            col2.write(f"**Avance integral · {round(progress['overall']*100)}%**")
-            col2.progress(progress["overall"])
-            if col3.button("Abrir →", key=f"open-{audit_id}", use_container_width=True):
+            col1, col2, col3 = st.columns([3, 2, 1], vertical_alignment="center")
+            col1.markdown(f"### {getattr(audit, 'company_name', 'Empresa')}")
+            col1.caption(getattr(audit, "sector", "") or "Sector no indicado")
+            col2.write(f"**Avance integral · {round(overall * 100)}%**")
+            col2.progress(overall)
+            if col3.button(
+                "Abrir →",
+                key=f"open-{audit_id}",
+                use_container_width=True,
+            ):
                 st.session_state.active_audit_id = audit_id
                 st.switch_page("views/interview.py")
 

@@ -13,12 +13,19 @@ def list_audits() -> list[Any]:
 
 def get_audit(audit_id: str) -> Any | None:
     getter = getattr(audit_repository, "get_audit", None)
-    if getter:
+
+    if getter is not None:
         return getter(audit_id)
+
     for audit in list_audits():
         if getattr(audit, "audit_id", None) == audit_id:
             return audit
+
     return None
+
+
+def delete_company_audits(company_name: str) -> int:
+    return audit_repository.delete_audits_by_company(company_name)
 
 
 def create_audit_compatible(
@@ -27,7 +34,7 @@ def create_audit_compatible(
     auditor_name: str,
     audit_date: str | None = None,
 ) -> Any:
-    creator = getattr(audit_repository, "create_audit")
+    creator = audit_repository.create_audit
     signature = inspect.signature(creator)
     today = audit_date or date.today().isoformat()
 
@@ -46,8 +53,9 @@ def create_audit_compatible(
         "fecha": today,
     }
 
-    kwargs = {}
-    missing = []
+    kwargs: dict[str, Any] = {}
+    missing: list[str] = []
+
     for name, parameter in signature.parameters.items():
         if name in aliases:
             kwargs[name] = aliases[name]
@@ -59,4 +67,5 @@ def create_audit_compatible(
             "La función create_audit requiere campos no reconocidos: "
             + ", ".join(missing)
         )
+
     return creator(**kwargs)

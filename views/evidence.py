@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import streamlit as st
-
 from components.audit_ui import render_audit_header
+from components.page_header import render_page_header
 from core.audit_facade import get_audit
 from core.ux_repository import load_evidence, save_evidence
 
@@ -13,45 +13,54 @@ if audit is None:
     st.warning("Selecciona una auditoría desde Auditorías.")
     st.stop()
 
+render_page_header(
+    title="Evidencias",
+    eyebrow="Aprende",
+    description="Controla qué documentos están disponibles y qué información sigue pendiente.",
+)
 render_audit_header(audit)
-st.title("Evidencias")
-st.caption("Registra qué documentos están disponibles y qué debe validarse presencialmente.")
 
 rows = load_evidence(audit_id)
-areas = list(dict.fromkeys(row["area"] for row in rows))
-edited_rows = []
+statuses = ["Pendiente", "Solicitada", "Disponible", "No aplica"]
+complete = sum(row.get("status") in {"Disponible", "No aplica"} for row in rows)
+progress = complete / len(rows) if rows else 0
 
-for area in areas:
+summary, action = st.columns([4, 1.2], vertical_alignment="center")
+summary.subheader("Repositorio de evidencia")
+summary.caption(f"{complete} de {len(rows)} evidencias resueltas")
+action.metric("Avance", f"{progress:.0%}")
+st.progress(progress)
+st.divider()
+
+edited = []
+for area in dict.fromkeys(row["area"] for row in rows):
     st.subheader(area)
+    st.caption("DOCUMENTO / ESTADO / NOTAS")
     for index, row in enumerate(rows):
         if row["area"] != area:
             continue
-        with st.container(border=True):
-            col_1, col_2 = st.columns([2, 1])
-            col_1.markdown(f"**{row['name']}**")
-            status = col_2.selectbox(
-                "Estado",
-                ["Pendiente", "Solicitada", "Disponible", "No aplica"],
-                index=["Pendiente", "Solicitada", "Disponible", "No aplica"].index(row["status"]),
-                key=f"evidence-status-{audit_id}-{index}",
-                label_visibility="collapsed",
-            )
-            notes = st.text_input(
-                "Notas",
-                value=row.get("notes", ""),
-                placeholder="Dónde está, quién la enviará o qué falta validar.",
-                key=f"evidence-notes-{audit_id}-{index}",
-            )
-            edited_rows.append(
-                {
-                    "area": row["area"],
-                    "name": row["name"],
-                    "status": status,
-                    "notes": notes,
-                }
-            )
+        name_col, status_col = st.columns([2.5, 1], vertical_alignment="center")
+        name_col.markdown(f"**{row['name']}**")
+        current = row.get("status", "Pendiente")
+        status = status_col.selectbox(
+            "Estado",
+            statuses,
+            index=statuses.index(current) if current in statuses else 0,
+            key=f"evidence-status-{audit_id}-{index}",
+            label_visibility="collapsed",
+        )
+        notes = st.text_input(
+            "Notas",
+            value=row.get("notes", ""),
+            placeholder="Ubicación, responsable o validación pendiente.",
+            key=f"evidence-notes-{audit_id}-{index}",
+            label_visibility="collapsed",
+        )
+        edited.append({"area": row["area"], "name": row["name"], "status": status, "notes": notes})
+        st.divider()
 
-if st.button("Guardar evidencias", type="primary", use_container_width=True):
-    save_evidence(audit_id, edited_rows)
+save_col, _ = st.columns([1.5, 3])
+if save_col.button("Guardar evidencias", type="primary", use_container_width=True):
+    save_evidence(audit_id, edited)
     st.success("Evidencias actualizadas.")
     st.rerun()
